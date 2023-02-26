@@ -14,7 +14,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget=({ userId, picturePath }) => {
+    const author=useSelector((state) => state.user);
+    console.log(author)
     const [user, setUser]=useState(null);
+    console.log(user)
     const { palette }=useTheme();
     const navigate=useNavigate();
     const token=useSelector((state) => state.token);
@@ -76,7 +79,8 @@ const UserWidget=({ userId, picturePath }) => {
                         <Typography color={medium}>{friends.length} friends</Typography>
                     </Box>
                 </FlexBetween>
-                <ManageAccountsOutlined />
+                {author._id===user._id&&(<ManageAccountsOutlined />)}
+
             </FlexBetween>
 
             <Divider />
@@ -129,7 +133,7 @@ const UserWidget=({ userId, picturePath }) => {
                             <Typography color={medium}>Social Network</Typography>
                         </Box>
                     </FlexBetween>
-                    <EditOutlined sx={{ color: main }} />
+                    {author._id===user._id&&(<EditOutlined sx={{ color: main }} />)}
                 </FlexBetween>
 
                 <FlexBetween gap="1rem">
@@ -142,7 +146,7 @@ const UserWidget=({ userId, picturePath }) => {
                             <Typography color={medium}>Network Platform</Typography>
                         </Box>
                     </FlexBetween>
-                    <EditOutlined sx={{ color: main }} />
+                    {author._id===user._id&&(<EditOutlined sx={{ color: main }} />)}
                 </FlexBetween>
             </Box>
         </WidgetWrapper>
