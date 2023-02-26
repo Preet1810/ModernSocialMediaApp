@@ -25,6 +25,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../state/index";
 import config from "../../config";
+
 const MyPostWidget=({ picturePath }) => {
     const dispatch=useDispatch();
     const [isImage, setIsImage]=useState(false);
@@ -47,8 +48,10 @@ const MyPostWidget=({ picturePath }) => {
         }
 
         const response=await fetch(`${config.API_BASE_URL}/posts`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
             body: formData,
         });
         const posts=await response.json();

@@ -1,11 +1,12 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
-
+import { cloudinary, storage } from '../cloudinary/index.js';
 /* CREATE */
 export const createPost=async (req, res) => {
     try {
-        const { userId, description, picturePath }=req.body;
+        const { userId, description }=req.body;
         const user=await User.findById(userId);
+        const { path }=req.file;
         const newPost=new Post({
             userId,
             firstName: user.firstName,
@@ -13,14 +14,13 @@ export const createPost=async (req, res) => {
             location: user.location,
             description,
             userPicturePath: user.picturePath,
-            picturePath,
+            picturePath: path,
             likes: {},
             comments: [],
         });
         await newPost.save();
-
         const post=await Post.find();
-        res.status(201).json(post);
+        res.status(201).json(post)
     } catch (err) {
         res.status(409).json({ message: err.message });
     }

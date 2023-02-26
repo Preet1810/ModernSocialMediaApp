@@ -35,14 +35,16 @@ app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* FILE STORAGE */
-const storage=multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/assets");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-});
+// const storage=multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, "public/assets");
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.originalname);
+//     },
+// });
+import { cloudinary, storage } from './cloudinary/index.js';
+
 
 const upload=multer({ storage });
 
