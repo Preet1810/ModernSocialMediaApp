@@ -5,6 +5,7 @@ import Navbar from '../../scenes/navbar/index'
 import UserWidget from '../../scenes/widgets/UserWidget'
 import MyPostWidget from '../../scenes/widgets/MyPostWidget'
 import PostsWidget from "../../scenes/widgets/PostsWidget";
+import AdvertWidget from '../../scenes/widgets/AdvertWidget';
 const HomePage=() => {
     const isNonMobileScreens=useMediaQuery("(min-width:1000px)");
     const { _id, picturePath }=useSelector((state) => state.user);
@@ -29,8 +30,12 @@ const HomePage=() => {
                     <PostsWidget userId={_id} />
                 </Box>
                 {isNonMobileScreens&&(
-                    <Box flexBasis="26%"></Box>
+                    <Box flexBasis="26%">
+                        <AdvertWidget />
+                    </Box>
+
                 )}
+
             </Box>
         </Box>
     )
