@@ -17,6 +17,7 @@ import {
     IconButton,
     useMediaQuery,
 } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
 import UserImage from "../../components/UserImage";
@@ -30,6 +31,7 @@ const MyPostWidget=({ picturePath }) => {
     const dispatch=useDispatch();
     const [isImage, setIsImage]=useState(false);
     const [image, setImage]=useState(null);
+    const [isLoad, setLoad]=useState(false);
     const [post, setPost]=useState("");
     const { palette }=useTheme();
     const { _id }=useSelector((state) => state.user);
@@ -39,6 +41,7 @@ const MyPostWidget=({ picturePath }) => {
     const medium=palette.neutral.medium;
 
     const handlePost=async () => {
+        setLoad(true);
         const formData=new FormData();
         formData.append("userId", _id);
         formData.append("description", post);
@@ -56,6 +59,7 @@ const MyPostWidget=({ picturePath }) => {
         });
         const posts=await response.json();
         dispatch(setPosts({ posts }));
+        setLoad(false);
         setImage(null);
         setPost("");
     };
@@ -158,9 +162,10 @@ const MyPostWidget=({ picturePath }) => {
                     </FlexBetween>
                 )}
 
-                <Button
+                <LoadingButton
                     disabled={!post}
                     onClick={handlePost}
+                    loading={isLoad}
                     sx={{
                         color: palette.background.alt,
                         backgroundColor: palette.primary.main,
@@ -168,7 +173,7 @@ const MyPostWidget=({ picturePath }) => {
                     }}
                 >
                     POST
-                </Button>
+                </LoadingButton>
             </FlexBetween>
         </WidgetWrapper>
     );

@@ -8,6 +8,7 @@ import {
     useTheme,
 } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -55,14 +56,17 @@ const Form=() => {
     const isNonMobile=useMediaQuery("(min-width:600px)");
     const isLogin=pageType==="login";
     const isRegister=pageType==="register";
+    const [isLoad, setLoad]=useState(false);
 
     const register=async (values, onSubmitProps) => {
+
         // this allows us to send form info with image
+        setLoad(true)
         const formData=new FormData();
         for (let value in values) {
             formData.append(value, values[value]);
         }
-        formData.append("picturePath", values.picture.name);
+        formData.append("picturePath", "");
 
         const savedUserResponse=await fetch(
             `${config.API_BASE_URL}/auth/register`,
@@ -73,13 +77,14 @@ const Form=() => {
         );
         const savedUser=await savedUserResponse.json();
         onSubmitProps.resetForm();
-
+        setLoad(false)
         if (savedUser) {
             setPageType("login");
         }
     };
 
     const login=async (values, onSubmitProps) => {
+        setLoad(true)
         const loggedInResponse=await fetch(`${config.API_BASE_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -94,6 +99,7 @@ const Form=() => {
                     token: loggedIn.token,
                 })
             );
+            setLoad(false)
             navigate("/home");
         }
     };
@@ -235,19 +241,21 @@ const Form=() => {
 
                     {/* BUTTONS */}
                     <Box>
-                        <Button
+                        <LoadingButton
                             fullWidth
                             type="submit"
+                            loading={isLoad}
                             sx={{
                                 m: "2rem 0",
                                 p: "1rem",
                                 backgroundColor: palette.primary.main,
                                 color: palette.background.alt,
                                 "&:hover": { color: palette.primary.main },
+
                             }}
                         >
                             {isLogin? "LOGIN":"REGISTER"}
-                        </Button>
+                        </LoadingButton>
                         <Typography
                             onClick={() => {
                                 setPageType(isLogin? "register":"login");
