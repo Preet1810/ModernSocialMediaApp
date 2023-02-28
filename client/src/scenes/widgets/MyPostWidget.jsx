@@ -33,6 +33,7 @@ const MyPostWidget=({ picturePath }) => {
     const [image, setImage]=useState(null);
     const [isLoad, setLoad]=useState(false);
     const [post, setPost]=useState("");
+
     const { palette }=useTheme();
     const { _id }=useSelector((state) => state.user);
     const token=useSelector((state) => state.token);
@@ -163,7 +164,7 @@ const MyPostWidget=({ picturePath }) => {
                 )}
 
                 <LoadingButton
-                    disabled={!post}
+                    disabled={image===null||!post.trim()}
                     onClick={handlePost}
                     loading={isLoad}
                     sx={{

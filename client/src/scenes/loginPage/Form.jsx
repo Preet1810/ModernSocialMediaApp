@@ -25,8 +25,19 @@ const registerSchema=yup.object().shape({
     password: yup.string().required("required"),
     location: yup.string().required("required"),
     occupation: yup.string().required("required"),
-    picture: yup.string().required("required"),
+    picture: yup
+        .mixed()
+        .required("required")
+        .test("fileSize", "File size is too large", (value) => {
+            return value.size<=config.MAX_FILE_SIZE;
+        })
+        .test("fileType", "Unsupported File Format", (value) => {
+            return (
+                ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
+            );
+        }),
 });
+
 
 const loginSchema=yup.object().shape({
     email: yup.string().email("invalid email").required("required"),
@@ -59,7 +70,6 @@ const Form=() => {
     const [isLoad, setLoad]=useState(false);
 
     const register=async (values, onSubmitProps) => {
-
         // this allows us to send form info with image
         setLoad(true)
         const formData=new FormData();

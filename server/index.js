@@ -30,7 +30,7 @@ app.use(cors({
     origin: process.env.CLIENT_URL,
     optionsSuccessStatus: 200
 }));
-
+// app.use(cors());
 
 
 const upload=multer({ storage });
